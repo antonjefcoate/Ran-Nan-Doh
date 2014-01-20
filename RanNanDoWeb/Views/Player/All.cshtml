@@ -1,0 +1,9 @@
+@model RanNanDoh.DataViews.PlayerListDto
+
+Total users are @Model.TotalCount
+<ui>
+    @foreach (var user in Model.Names)
+    {
+        <li>@user</li>
+    }
+</ui>

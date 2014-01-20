@@ -1,0 +1,27 @@
+﻿@model System.Guid
+@using RanNanDoh.Domain
+
+<h2>Play a game...</h2>
+
+@using(Html.BeginForm("play", "game", FormMethod.Post))
+{
+    <input type="hidden" value="@Model" name="playerId" />
+    
+    <h2>Move 1</h2>
+    <input type="radio" value="@MoveType.Kick" name="moveone" id="1-1" /> <label for="1-1">Kick</label>
+    <input type="radio" value="@MoveType.Punch" name="moveone" id="1-2" /> <label for="1-2">Punch</label>
+    <input type="radio" value="@MoveType.Block" name="moveone" id="1-3" /> <label for="1-3">Block</label>
+    
+    <h2>Move 2</h2>
+    <input type="radio" value="@MoveType.Kick" name="movetwo" id="2-1" /> <label for="2-1">Kick</label>
+    <input type="radio" value="@MoveType.Punch" name="movetwo" id="2-2" /> <label for="2-2">Punch</label>
+    <input type="radio" value="@MoveType.Block" name="movetwo" id="2-3" /> <label for="2-3">Block</label>
+    
+    <h2>Move 3</h2>
+    <input type="radio" value="@MoveType.Kick" name="movethree" id="3-1" /> <label for="3-1">Kick</label>
+    <input type="radio" value="@MoveType.Punch" name="movethree" id="3-2" /> <label for="3-2">Punch</label>
+    <input type="radio" value="@MoveType.Block" name="movethree" id="3-3" /> <label for="3-3">Block</label>
+    
+    <br /><br /><br />
+    <input type="submit" value="Play" />
+}

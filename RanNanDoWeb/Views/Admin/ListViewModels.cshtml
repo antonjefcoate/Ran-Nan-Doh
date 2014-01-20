@@ -1,0 +1,14 @@
+﻿@model List<string>
+@{
+    ViewBag.Title = "List";
+}
+
+<h2>Recreate ViewModels</h2>
+@using (Html.BeginForm("RebuildViewModel", "Admin")){
+    <ul>
+    @foreach (var vm in Model)
+    {
+        <li>@vm <button type="submit" name="viewmodel" value="@vm">Rebuild</button></li>
+    }
+    </ul>
+}

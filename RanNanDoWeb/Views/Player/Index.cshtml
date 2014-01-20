@@ -1,0 +1,42 @@
+﻿@model RanNanDoh.DataViews.PlayerDto
+
+<h2>Player</h2>
+
+@if (Model != null)
+{
+    <h3>User Details:</h3>
+    <ul>
+        <li>UID: @Model.Id</li>
+        <li>Name: @Model.Name</li>
+    </ul>
+    
+    <div>
+    Ready to <a href="@Url.Action("play", "game")">PLAY</a>?
+    <br />
+    Ready to <a href="@Url.Action("PlayAgainstFriend", "game", new { playerId = @Model.Id })">PLAY against friend</a>?
+    </div>
+    <div>
+    @if (Model.ChallengesAwaitingAction.Any())
+	{
+        <h4>You have the following challenges awaiting your action.</h4>
+        <ul>
+        @foreach (var challenge in Model.ChallengesAwaitingAction)
+	    {
+            <li>@challenge.ChallengerName challenged you 
+            @Html.ActionLink("Play", "PlayAgainstFriend", "Game", new { roundId = challenge.RoundId, opponentId = challenge.ChallengerId })
+            </li>
+	    }
+        </ul>
+	}
+    </div>
+}
+else
+{
+    using (Html.BeginForm("create", "player", FormMethod.Post))
+    {
+        <label for="userName">UserName: </label><input type="text" name="userName" id="userName" />
+        <input type="submit" value="Create" />
+    }
+    <br/>
+    @Html.ActionLink("Facebook Login", "FacebookLogin", "Facebook");
+}

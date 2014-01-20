@@ -1,0 +1,55 @@
+﻿@model RanNanDohUi.Controllers.PlayAgainstFriendViewModel
+@using RanNanDoh.Domain
+<h2>Play a game...</h2>
+@if (Model.RoundId != null)
+{
+    <p>RoundId : @Model.RoundId</p>
+}
+@if(Model.OpponentId == null)
+{
+    <br /><br /><br />
+    <h2>Choose an opponent</h2>
+    <ul>
+    @foreach (RanNanDohUi.Models.PotentialPlayer friend in Model.Players)
+    {
+        <li><a href="https://www.facebook.com/dialog/apprequests?app_id=154100424727795&message=Send%20RanNanDoh%20Invitation&redirect_uri=http://localhost/RanNanDoh/facebook/friends_callback&to=@friend.Id&frictionless=true&data=@Model.RoundId:@Model.PlayerId"><img src="@friend.PhotoHref" /></a></li>
+    }
+    </ul>
+}
+@using (Html.BeginForm("playAgainstFriend", "game", FormMethod.Post))
+{
+    <input type="hidden" value="@Model.PlayerId" name="playerId" />
+    <h2>Round id</h2>
+    <input type="hidden" name="roundId" value="@Model.RoundId" />
+    if(Model.OpponentId != null)
+    {
+        <input type="hidden" name="opponentId" value="@(Model.OpponentId ?? string.Empty)" />
+    }
+    
+    <h2>Move 1</h2>
+    <input type="radio" value="@MoveType.Kick" name="moveone" id="1-1" /> <label for="1-1">Kick</label>
+    <input type="radio" value="@MoveType.Punch" name="moveone" id="1-2" /> <label for="1-2">Punch</label>
+    <input type="radio" value="@MoveType.Block" name="moveone" id="1-3" /> <label for="1-3">Block</label>
+    
+    <h2>Move 2</h2>
+    <input type="radio" value="@MoveType.Kick" name="movetwo" id="2-1" /> <label for="2-1">Kick</label>
+    <input type="radio" value="@MoveType.Punch" name="movetwo" id="2-2" /> <label for="2-2">Punch</label>
+    <input type="radio" value="@MoveType.Block" name="movetwo" id="2-3" /> <label for="2-3">Block</label>
+    
+    <h2>Move 3</h2>
+    <input type="radio" value="@MoveType.Kick" name="movethree" id="3-1" /> <label for="3-1">Kick</label>
+    <input type="radio" value="@MoveType.Punch" name="movethree" id="3-2" /> <label for="3-2">Punch</label>
+    <input type="radio" value="@MoveType.Block" name="movethree" id="3-3" /> <label for="3-3">Block</label>
+    <br />
+    
+    <br /><br /><br />
+    <h2>Registered opponents</h2>
+    <ul>
+        @foreach (var friend in Model.RegisteredPlayers)
+        {
+            <li><input type="radio" name="opponentId" value="@friend.Id" /> <img src="@friend.PhotoHref" /></li>
+        }
+    </ul>
+
+    <input type="submit" value="Play Against Registered Opponent" />
+}

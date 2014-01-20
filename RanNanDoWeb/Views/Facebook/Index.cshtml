@@ -1,0 +1,16 @@
+﻿@model string[]
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+@using (var form = Html.BeginForm("Request", "Facebook"))
+{
+    <ul>
+    @foreach (var request in Model)
+	{
+        <li>@request <input type="submit" name="requestId" value="@request" /></li>
+	}
+    </ul>
+}

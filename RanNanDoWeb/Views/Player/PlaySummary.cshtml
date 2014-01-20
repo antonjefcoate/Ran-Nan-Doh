@@ -1,0 +1,17 @@
+﻿@model List<RanNanDoh.DataViews.UserRoundResultDto>
+
+
+<h2>Summary Of Rounds Played:</h2>
+<ol>
+    @foreach (var round in Model)
+    {
+        <li>Round Id: @round.Id</li>
+        <li>Won? - @round.Result</li>
+        <li>Against: - @round.OpponentName</li>
+        <li>--------------------------------------------------------</li>
+    }
+</ol>
+
+Ready to <a href="@Url.Action("play", "game")">PLAY</a> again?
+<br />
+Ready to <a href="@Url.Action("playAgainstFriend", "game", new { playerId = @Model[0].PlayerId })">PLAY against friend</a>?
