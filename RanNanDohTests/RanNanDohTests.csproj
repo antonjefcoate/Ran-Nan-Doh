@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AggregateRootTest.cs" />
+    <Compile Include="Domain\PlayerTests.cs" />
     <Compile Include="Domain\RoundTests.cs" />
     <Compile Include="WinnerCalculatorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -11,7 +11,7 @@ namespace RanNanDoh.ReadModels.Handlers
     public class UserRoundListDtoHandler :
         Handles<Player1MovesPlayed>,
         Handles<Player2MovesPlayed>,
-        Handles<PlayerChallenged>,
+        Handles<PlayerWasChallenged>,
         Handles<RoundWon>,
         Handles<RoundDraw>,
         IViewModelDropper
@@ -42,9 +42,9 @@ namespace RanNanDoh.ReadModels.Handlers
             AddRoundResultItem(message.PlayerId, message.RoundId);
         }
 
-        public void Handle(PlayerChallenged message)
+        public void Handle(PlayerWasChallenged message)
         {
-            AddRoundResultItem(message.OpponentId, message.RoundId);
+            AddRoundResultItem(message.PlayerId, message.RoundId);
         }
 
         private void AddRoundResultItem(Guid playerId, Guid roundId)
@@ -178,10 +178,10 @@ namespace RanNanDoh.ReadModels.Handlers
             _writer.Update(player.Id, player);
         }
 
-        public void Handle(PlayerChallenged message)
+        public void Handle(PlayerWasChallenged message)
         {
-            this.AddComputerPlayerIfNotFound(message.OpponentId);
-            var player = _reader.Get(message.OpponentId);
+            this.AddComputerPlayerIfNotFound(message.PlayerId);
+            var player = _reader.Get(message.PlayerId);
             var challenger = _reader.Get(message.ChallengerId);
             player.ChallengesAwaitingAction.Add(new Challenge(message.RoundId, challenger.Id, challenger.Name));
             _writer.Update(player.Id, player);

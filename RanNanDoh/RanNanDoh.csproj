@@ -58,6 +58,7 @@
     <Compile Include="Domain\Services\WinnerCalculator.cs" />
     <Compile Include="Infrastructure\EventDescriptor.cs" />
     <Compile Include="Infrastructure\MongoEventStore.cs" />
+    <Compile Include="Processes\UserNotificationProcess.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

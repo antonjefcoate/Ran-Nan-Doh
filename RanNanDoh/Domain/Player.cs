@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Microsoft.Practices.ServiceLocation;
 using RanNanDoh.Domain.Messages;
 using RanNanDoh.Domain.Services;
@@ -15,6 +16,7 @@ namespace RanNanDoh.Domain
         private string _authToken;
         // ExternalID is a string in order to provide compatibility for future providers
         private string _externalId;
+        private readonly List<Guid> _ongoingOpponentsIds = new List<Guid>();
 
         public Player()
         { }
@@ -39,9 +41,14 @@ namespace RanNanDoh.Domain
             _authToken = e.AuthToken;
         }
 
+        private void Apply(PlayerWasChallenged e)
+        {
+            _ongoingOpponentsIds.Add(e.ChallengerId);
+        }
+
         private void Apply(PlayerChallenged e)
         {
-            // I THINK we do nothing here?
+            _ongoingOpponentsIds.Add(e.OpponentId);
         }
 
         #endregion
@@ -61,18 +68,32 @@ namespace RanNanDoh.Domain
 
         public void IssueChallenge(Player opponent, Round round)
         {
-            opponent.BeChallenged(this.Id, round.Id, this._userName);
+            GuardAgainstDisallowedGames(opponent);
+
+            opponent.BeChallenged(this, round);
+
+            ApplyChange(new PlayerChallenged(Id, opponent.Id, round.Id));
         }
-        
-        public void BeChallenged(Guid challengerId, Guid roundId, string challengerName)
+
+        public void BeChallenged(Player challenger, Round round)
         {
-            var notifier = ServiceLocator.Current.GetInstance<IChallengeNotifier>();
+            GuardAgainstDisallowedGames(challenger);
 
-            // Notify opponent player
-            notifier.Notify(this._externalId, _authToken, roundId, challengerName, this._userName);
+           // Notify domain of event.
+            ApplyChange(new PlayerWasChallenged(Id, Username, _externalId, _authToken, round.Id, challenger.Username, challenger.Id));
+        }
 
-            // Notify domain of event.
-            ApplyChange(new PlayerChallenged(challengerId, this.Id, roundId));
+        private void GuardAgainstDisallowedGames(Player opponent)
+        {
+            if (_ongoingOpponentsIds.Contains(opponent.Id))
+                throw new InvalidOperationException(string.Format("An existing game aginst {0} is in progress.", opponent));
+        }
+
+        protected string Username { get; private set; }
+
+        public override string ToString()
+        {
+            return _userName;
         }
     }
 }

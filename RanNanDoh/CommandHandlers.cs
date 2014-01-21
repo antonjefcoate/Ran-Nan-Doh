@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Microsoft.Practices.ServiceLocation;
 using RanNanDoh.Commands;
 using RanNanDoh.Domain;
 using RanNanDoh.Domain.Services;
@@ -72,6 +73,17 @@ namespace RanNanDoh.CommandHandlers
             _roundRepo.Save(round, -1);
 
             _playerRepo.Save(opponent, -1);
+        }
+    }
+
+    public class PlayerNotifier : Handles<NotifyPlayer>
+    {
+        public void Handle(NotifyPlayer message)
+        {
+            var notifier = ServiceLocator.Current.GetInstance<IChallengeNotifier>();
+
+            // Notify opponent player
+            notifier.Notify(message.ExternalId, message.AuthToken, message.RoundId, message.ChallengerUsername, message.UserName);
         }
     }
 
