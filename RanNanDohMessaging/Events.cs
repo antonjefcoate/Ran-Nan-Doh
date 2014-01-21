@@ -16,6 +16,28 @@ namespace RanNanDoh.Domain.Messages
         }
     }
 
+    public class PlayerWasChallenged : Event
+    {
+
+        public Guid PlayerId { get; private set; }
+        public string Username { get; private set; }
+        public string ExternalId { get; private set; }
+        public string AuthToken { get; private set; }
+        public Guid RoundId { get; private set; }
+        public string ChallengerUsername { get; private set; }
+        public Guid ChallengerId { get; private set; }
+        
+        public PlayerWasChallenged(Guid playerId, string username, string externalId, string authToken, Guid roundId, string challengerUsername, Guid challengerId)
+        {
+            PlayerId = playerId;
+            Username = username;
+            ExternalId = externalId;
+            AuthToken = authToken;
+            RoundId = roundId;
+            ChallengerUsername = challengerUsername;
+            ChallengerId = ChallengerId;
+        }
+    }
     public class PlayerChallenged : Event
     {
         public Guid ChallengerId { get; private set; }

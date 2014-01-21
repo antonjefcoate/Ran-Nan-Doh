@@ -89,4 +89,22 @@ namespace RanNanDoh.Commands
             OpponentId = opponentId;
         }
     }
+
+    public class NotifyPlayer : Command
+    {
+        public NotifyPlayer(string userName, string challengerUsername, Guid roundId, string authToken, string externalId)
+        {
+            UserName = userName;
+            ChallengerUsername = challengerUsername;
+            RoundId = roundId;
+            AuthToken = authToken;
+            ExternalId = externalId;
+        }
+
+        public readonly string UserName;
+        public readonly string ChallengerUsername;
+        public readonly Guid RoundId;
+        public readonly string AuthToken;
+        public readonly string ExternalId;
+    }
 }

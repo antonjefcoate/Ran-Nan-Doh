@@ -69,14 +69,14 @@ namespace RanNanDohUi
             Bus.RegisterHandler<PlayerCreated>(playerDetailView.Handle);
             Bus.RegisterHandler<Player1MovesPlayed>(playerDetailView.Handle);
             Bus.RegisterHandler<Player2MovesPlayed>(playerDetailView.Handle);
-            Bus.RegisterHandler<PlayerChallenged>(playerDetailView.Handle);
+            Bus.RegisterHandler<PlayerWasChallenged>(playerDetailView.Handle);
 
             var userRoundListDtoWriter = ServiceLocator.Current.GetInstance<IViewModelWriter<UserRoundResultListDto>>();
             var userRoundListDtoReader = ServiceLocator.Current.GetInstance<IViewModelReader<UserRoundResultListDto>>();
             var userRoundListDtoHandler = new UserRoundListDtoHandler(userRoundListDtoWriter, userRoundListDtoReader, playerDtoReader);
             Bus.RegisterHandler<Player1MovesPlayed>(userRoundListDtoHandler.Handle);
             Bus.RegisterHandler<Player2MovesPlayed>(userRoundListDtoHandler.Handle);
-            Bus.RegisterHandler<PlayerChallenged>(userRoundListDtoHandler.Handle);
+            Bus.RegisterHandler<PlayerWasChallenged>(userRoundListDtoHandler.Handle);
             Bus.RegisterHandler<RoundWon>(userRoundListDtoHandler.Handle);
             Bus.RegisterHandler<RoundDraw>(userRoundListDtoHandler.Handle);
 

@@ -22,7 +22,7 @@ namespace RanNanDohUiTests
         public void SetUpMethod()
         {
             this.SetUp();
-            target = new T();
+            target = CreateSut();
             target.LoadsFromHistory(this.Given());
             try
             {
@@ -35,5 +35,9 @@ namespace RanNanDohUiTests
             }
         }
 
+        protected virtual T CreateSut()
+        {
+            return new T();
+        }
     }
 }
