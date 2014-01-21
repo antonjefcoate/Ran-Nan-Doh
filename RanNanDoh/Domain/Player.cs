@@ -61,18 +61,20 @@ namespace RanNanDoh.Domain
 
         public void IssueChallenge(Player opponent, Round round)
         {
-            opponent.BeChallenged(this.Id, round.Id, this._userName);
+            opponent.BeChallenged(this, round);
         }
-        
-        public void BeChallenged(Guid challengerId, Guid roundId, string challengerName)
+
+        public void BeChallenged(Player challenger, Round round)
         {
             var notifier = ServiceLocator.Current.GetInstance<IChallengeNotifier>();
 
             // Notify opponent player
-            notifier.Notify(this._externalId, _authToken, roundId, challengerName, this._userName);
+            notifier.Notify(this._externalId, _authToken, round.Id, challenger.Username, this._userName);
 
             // Notify domain of event.
-            ApplyChange(new PlayerChallenged(challengerId, this.Id, roundId));
+            ApplyChange(new PlayerChallenged(challenger.Id, this.Id, round.Id));
         }
+
+        protected string Username { get; private set; }
     }
 }
